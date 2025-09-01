@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WhatsApp Business API Setup</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+        .warning { background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .info { background: #d1ecf1; border: 1px solid #bee5eb; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; }
+        pre { background: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🚨 WhatsApp Business API Setup Issue</h1>
+    
+    <div class="error">
+        <h3>Official WhatsApp API Docker Image Not Publicly Available</h3>
+        <p>The official WhatsApp Business API Docker image (<code>docker.whatsapp.biz/coreapp</code>) requires special access from Meta and is not publicly available.</p>
+    </div>
+
+    <div class="info">
+        <h3>Your Phone Number: +1 555-793-6692</h3>
+        <p>Your Certificate: <code>CmgKJAi/667jweutAhIGZW50OndhIgtiYWJhIUhlYnJld1C37tXFBhpAMeMsc52hAUx6jtOKo5iixqKrZn581nFFgXNDcwIRSnUbZeyL+2bbbnm8e1+wzIZyopeV0kkEbvh/3pjt5mk0ABIubUpSuqzXm/TwWrWznaloLpxZ4uNVx9iqqBlETq08f3sWyuDKcMwOJs3OjkOtKQ==</code></p>
+    </div>
+
+    <div class="warning">
+        <h3>⚠️ Alternative Options:</h3>
+        <ol>
+            <li><strong>WhatsApp Business Cloud API</strong> (Recommended)
+                <ul>
+                    <li>Free tier available</li>
+                    <li>No server setup required</li>
+                    <li>Visit: <a href="https://developers.facebook.com/docs/whatsapp/cloud-api" target="_blank">developers.facebook.com/docs/whatsapp/cloud-api</a></li>
+                </ul>
+            </li>
+            <li><strong>Request Official On-Premises Access</strong>
+                <ul>
+                    <li>Contact Meta/WhatsApp Business</li>
+                    <li>Requires business verification</li>
+                    <li>May have licensing costs</li>
+                </ul>
+            </li>
+            <li><strong>Third-party WhatsApp API Providers</strong>
+                <ul>
+                    <li>Twilio, MessageBird, etc.</li>
+                    <li>Usually paid services</li>
+                    <li>Easier setup</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <div class="info">
+        <h3>📋 What We've Prepared:</h3>
+        <p>Your setup files are ready in case you get official access:</p>
+        <ul>
+            <li><code>docker-compose.yml</code> - Docker configuration</li>
+            <li><code>config.env</code> - Your phone number and certificate</li>
+            <li><code>register-phone.sh</code> - Registration script</li>
+            <li><code>verify-code.sh</code> - Verification script</li>
+        </ul>
+    </div>
+
+    <h3>🎯 Recommended Next Step: WhatsApp Business Cloud API</h3>
+    <p>Since the On-Premises API is being deprecated anyway, I recommend setting up the Cloud API instead:</p>
+    <ol>
+        <li>Go to <a href="https://developers.facebook.com/apps/" target="_blank">developers.facebook.com/apps/</a></li>
+        <li>Create a new app → Business → WhatsApp</li>
+        <li>Add your phone number: <strong>+1 555-793-6692</strong></li>
+        <li>Use your certificate in the setup process</li>
+    </ol>
+</body>
+</html>

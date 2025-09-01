@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "webhook-server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/webhook-server.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

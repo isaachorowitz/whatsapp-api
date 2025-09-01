@@ -1,0 +1,25 @@
+services:
+  # WhatsApp API Mock Server for development/testing
+  whatsapp-api:
+    image: nginx:alpine
+    ports:
+      - "9090:80"
+    volumes:
+      - ./mock-api:/usr/share/nginx/html
+    restart: always
+    
+  # PostgreSQL Database (if you get official WhatsApp API access later)
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: coreapp
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  db_data:
