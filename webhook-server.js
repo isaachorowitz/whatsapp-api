@@ -2,6 +2,9 @@ const express = require('express');
 const crypto = require('crypto');
 const app = express();
 
+// For Node.js versions that don't have fetch built-in
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+
 // Load configuration
 const fs = require('fs');
 
@@ -142,17 +145,86 @@ app.post('/webhook', (req, res) => {
     }
 });
 
+// Function to send replies back to WhatsApp
+async function sendReply(toPhoneNumber, messageText) {
+    const url = `${process.env.API_BASE_URL}/${process.env.PHONE_NUMBER_ID}/messages`;
+    
+    const payload = {
+        messaging_product: "whatsapp",
+        to: toPhoneNumber,
+        type: "text",
+        text: {
+            body: messageText
+        }
+    };
+    
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${process.env.ACCESS_TOKEN}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        
+        const result = await response.json();
+        console.log('✅ Message sent successfully:', result);
+        return result;
+    } catch (error) {
+        console.error('❌ Error sending message:', error);
+        return null;
+    }
+}
+
+// Customer Support Bot Logic
+function generateSupportResponse(messageText) {
+    const text = messageText.toLowerCase();
+    
+    // FAQ Responses for Baba App
+    if (text.includes('help') || text.includes('support')) {
+        return "👋 Hi! I'm here to help with your Baba app questions. You can ask me about:\n\n• Account issues\n• App features\n• Technical problems\n• Billing questions\n\nWhat can I help you with?";
+    }
+    
+    if (text.includes('account') || text.includes('login') || text.includes('password')) {
+        return "🔐 For account issues:\n\n1. Try resetting your password in the app\n2. Check your email for verification links\n3. Make sure you're using the correct email\n\nStill having trouble? Reply with 'agent' to speak with a human.";
+    }
+    
+    if (text.includes('app') && (text.includes('crash') || text.includes('not working') || text.includes('bug'))) {
+        return "🔧 For app issues:\n\n1. Try force-closing and reopening the app\n2. Update to the latest version\n3. Restart your phone\n\nIf the problem continues, reply with your phone model and OS version.";
+    }
+    
+    if (text.includes('billing') || text.includes('payment') || text.includes('subscription')) {
+        return "💳 For billing questions:\n\n• Check your subscription status in app settings\n• Payment issues? Verify your payment method\n• Need a refund? Reply with 'refund' and your order details\n\nNeed more help? Reply 'agent' for human support.";
+    }
+    
+    if (text.includes('agent') || text.includes('human') || text.includes('person')) {
+        return "🙋‍♀️ I'll connect you with a human agent. Please describe your issue in detail and someone from our team will respond within 2 hours during business hours (9AM-6PM EST).";
+    }
+    
+    // Default response
+    return "Thanks for contacting Baba support! 🌟\n\nI can help with:\n• Account & login issues\n• App problems\n• Billing questions\n• General support\n\nJust describe your issue or type 'help' for more options. For urgent matters, reply 'agent' to reach a human.";
+}
+
 // Function to handle incoming messages
 function handleIncomingMessage(message, value) {
     console.log('🎯 Processing incoming message...');
+    console.log('📱 From:', message.from);
+    console.log('💬 Message:', message.text?.body || `[${message.type}]`);
     
-    // Example: Auto-reply to text messages
+    // Handle text messages with customer support responses
     if (message.type === 'text') {
-        const replyText = `Thanks for your message: "${message.text.body}". This is an auto-reply from my WhatsApp API!`;
+        const supportResponse = generateSupportResponse(message.text.body);
         
-        // You could send an auto-reply here
-        console.log('🤖 Would send auto-reply:', replyText);
-        // sendReply(message.from, replyText);
+        console.log('🤖 Sending support response:', supportResponse);
+        
+        // Send the response
+        sendReply(message.from, supportResponse);
+    } else {
+        // Handle non-text messages (images, documents, etc.)
+        const fallbackResponse = "I received your message! For the best support experience, please send text messages. How can I help you with the Baba app today?";
+        console.log('🤖 Sending fallback response for', message.type);
+        sendReply(message.from, fallbackResponse);
     }
     
     // Log the message to a file or database
